@@ -6,15 +6,14 @@ if ($solutionsInCurrentDir)
 }
 else 
 {
-    $childDirs = Get-ChildItem $currentDir
+    $childDirs = Get-ChildItem -Directory $currentDir
 
     Foreach($childDir in $childDirs)
     {
-        $secondLevelDir = Join-Path $currentDir $childDir -Resolve
-        $secondLevelSolutions = @(Get-ChildItem $secondLevelDir | Where-Object { $_.Name.EndsWith("sln")})
+        $secondLevelSolutions = @(Get-ChildItem $childDir | Where-Object { $_.Name.EndsWith("sln")})
 
         if ($secondLevelSolutions) {
-            $solutionFullPath = Join-Path $childDir $secondLevelSolutions[0] -Resolve
+            $solutionFullPath = $secondLevelSolutions[0]
             Start-Process $solutionFullPath
             break
         }
